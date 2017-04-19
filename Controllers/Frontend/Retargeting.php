@@ -66,4 +66,17 @@ class Shopware_Controllers_Frontend_Retargeting extends Enlight_Controller_Actio
 
     }
 
+    public function addDiscountCodeAction() {
+
+        require_once(dirname(__FILE__) . '/../../lib/api/Retargeting_REST_API_Client.php');
+        $params = $this->request->getParams();
+        $token = Shopware()->Config()->get("RESTAPIKey");
+
+        $client = new Retargeting_REST_API_Client($params['key']);
+        $client->setResponseFormat("json");
+        $client->setDecoding(false);
+        $response = $client->discount->create("percentage", 10);
+        var_dump($response);die;
+    }
+
 }
