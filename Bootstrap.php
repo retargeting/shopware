@@ -251,6 +251,26 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                 'required' => true,
             )
         );
+
+        $this->Form()->setElement(
+          'text', 'tokenApiURL',
+            array(
+                'label' => 'token API URL',
+                'value' => '/retargeting/addDiscountCode',
+                'description' => '/retargeting/addDiscountCode',
+                'required' => true,
+            )
+        );
+
+        $this->Form()->setElement(
+          'text', 'ProductsFeedURL',
+            array(
+                'label' => 'Products Feed URL',
+                'value' => '/retargeting/products',
+                'description' => '/retargeting/products',
+                'required' => true
+            )
+        );
     }
 
     public function onModulesOrderSaveOrderProcessDetails(Enlight_Event_EventArgs $args)
