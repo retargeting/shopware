@@ -6,7 +6,7 @@
  * @copyright   Copyright (c) Retargeting
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
+use Shopware\Bundle\StoreFrontBundle;
 class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Components_Plugin_Bootstrap
 {
     /**
@@ -118,7 +118,6 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             "quantity" => $articleDB["quantity"],
             "variation" => false
         );
-//        $sArticle = Shopware()->Modules()->Articles()->sGetProductByOrdernumber('SW10136.5');
         Shopware()->Session()->offsetSet("delete", json_encode($article));
         $args->setReturn($return);
     }
@@ -326,9 +325,16 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                 $articlePrice = $article['price'];
                 $articlePrice = str_replace(',', '.', $articlePrice);
                 $articleQuantity = $article['quantity'];
-                $articleOrderNumber = $article['ordernumber'];
                 $articleName = $article['articlename'];
                 $variationCode = '';
+                $container = Shopware()->Container();
+                $additionalTextService = Shopware()->Container()->get('shopware_storefront.additional_text_service');
+                $context = $container->get('shopware_storefront.context_service')->getShopContext();
+                $product = Shopware()->Container()->get('shopware_storefront.list_product_service')->get($article['ordernumber'], $context);
+                $product = $additionalTextService->buildAdditionalText($product, $context);
+                if ($product->getAdditional()) {
+                    $variationCode = $product->getAdditional();
+                }
                 $products[] = '{
                     "id": '. $articleId .',
                     "quantity": '. $articleQuantity .',
@@ -340,13 +346,6 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                     "price"          => $articlePrice,
                     "variation_code" => $variationCode
                 );
-
-//                $articleNameFromOrderNumber = Shopware()->Modules()->Articles()->sGetArticleNameByOrderNumber($articleOrderNumber);
-//                if ($articleName === $articleNameFromOrderNumber) {
-////                    var_dump("DAAAAAAAA");
-////                    die;
-//                }
-
             }
         }
         $voucherModel = Shopware()->Models()->getRepository('Shopware\Models\Voucher\Voucher')->findOneBy(array('orderCode'=>$orderNumberDiscount));
@@ -860,7 +859,6 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             $view->extendsTemplate('frontend/plugins/retargeting/checkout.tpl');
         }
 
-//        $view->extendsTemplate('frontend/plugins/retargeting/removeFromCart.tpl');
         $view->extendsTemplate('frontend/plugins/retargeting/header.tpl');
         $view->assign('retargeting_domain_api', $this->Config()->get('TrackingAPIKey'));
     }
