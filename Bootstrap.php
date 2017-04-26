@@ -93,6 +93,34 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
           'Enlight_Controller_Action_PostDispatchSecure_Frontend_Custom',
             'onActionPostDispatchSecureFrontendCustom'
         );
+
+        $this->subscribeEvent(
+          'Shopware_Controllers_Frontend_Checkout::deleteArticleAction::before',
+            'onControllersFrontendCheckoutDeleteArticleActionBefore'
+        );
+    }
+
+    public function onControllersFrontendCheckoutDeleteArticleActionBefore(Enlight_Hook_HookArgs $args)
+    {
+        /** @var \Shopware_Controllers_Frontend_Checkout $subject */
+        $subject = $args->getSubject();
+        $request = $subject->Request();
+        $itemId = $request->getParam('sDelete');
+        $return = $args->getReturn();
+        $sql = "SELECT articleID, articlename, quantity
+                FROM s_order_basket
+                WHERE id=?
+                GROUP BY id";
+        $params = array($itemId);
+        $articleDB = Shopware()->Db()->fetchRow($sql, $params);
+        $article = array(
+            "product_id" => $articleDB["articleID"],
+            "quantity" => $articleDB["quantity"],
+            "variation" => false
+        );
+//        $sArticle = Shopware()->Modules()->Articles()->sGetProductByOrdernumber('SW10136.5');
+        Shopware()->Session()->offsetSet("delete", json_encode($article));
+        $args->setReturn($return);
     }
 
     public function onActionPostDispatchSecureFrontendCustom(Enlight_Event_EventArgs $args)
@@ -660,9 +688,29 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
 
         $request = $subject->Request();
         $action = $request->getActionName();
-        $abc=$request->getParam('action');
+
+        if ($action === 'cart') {
+            $target = $request->getParam('sTargetAction');
+            if ($target) {
+                $delete = Shopware()->Session()->offsetGet("delete");
+                if ($delete) {
+                    $view->assign("delete", $delete);
+                    $view->extendsTemplate('frontend/plugins/retargeting/removeFromCart.tpl');
+                }
+            }
+        Shopware()->Session()->offsetUnset("delete");
+        }
 
         if ($action === 'confirm') {
+            $target = $request->getParam('sTargetAction');
+            if ($target) {
+                $delete = Shopware()->Session()->offsetGet("delete");
+                if ($delete) {
+                    $view->assign("delete", $delete);
+                    $view->extendsTemplate('frontend/plugins/retargeting/removeFromCart.tpl');
+                }
+            }
+            Shopware()->Session()->offsetUnset("delete");
             $cartData = Shopware()->Session()->offsetGet("cartData");
             if ($cartData) {
                 $view->assign("cartData", $cartData);
@@ -812,6 +860,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             $view->extendsTemplate('frontend/plugins/retargeting/checkout.tpl');
         }
 
+//        $view->extendsTemplate('frontend/plugins/retargeting/removeFromCart.tpl');
         $view->extendsTemplate('frontend/plugins/retargeting/header.tpl');
         $view->assign('retargeting_domain_api', $this->Config()->get('TrackingAPIKey'));
     }
@@ -835,6 +884,18 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
     public function getLabel()
     {
         return "Retargeting Tracker";
+    }
+
+    public function getInfo()
+    {
+        return array(
+            'label' => $this->getLabel(),
+            'version' => $this->getVersion(),
+            'copyright' => 'Copyright (c) 2017, Retargeting SRL',
+            'author' => 'Retargeting SRL <info@retargeting.biz>',
+            'revision' => '1',
+            'link' => 'https://retargeting.biz/'
+        );
     }
 
 }
