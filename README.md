@@ -27,7 +27,7 @@ This work is licensed under a **Creative Commons Attribution-NonCommercial-Share
 ### Dependencies
 Tested on Shopware 5.2.21
 
-Shopware 5.2.20 CSRF token problem. Check UPGRADE-5.2.md
+Shopware 5.2.20 CSRF token problem. Check UPGRADE-5.2.md [https://github.com/shopware/shopware/blob/5.2/UPGRADE-5.2.md]
 
 ### TODO
 Installation via composer or via setup.sh file
