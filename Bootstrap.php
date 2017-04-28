@@ -327,14 +327,14 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                 $articleQuantity = $article['quantity'];
                 $articleName = $article['articlename'];
                 $variationCode = '';
-                $container = Shopware()->Container();
+
+                // variations
+/*                $container = Shopware()->Container();
                 $additionalTextService = Shopware()->Container()->get('shopware_storefront.additional_text_service');
                 $context = $container->get('shopware_storefront.context_service')->getShopContext();
                 $product = Shopware()->Container()->get('shopware_storefront.list_product_service')->get($article['ordernumber'], $context);
-                $product = $additionalTextService->buildAdditionalText($product, $context);
-                if ($product->getAdditional()) {
-                    $variationCode = $product->getAdditional();
-                }
+                $product = $additionalTextService->buildAdditionalText($product, $context);*/
+
                 $products[] = '{
                     "id": '. $articleId .',
                     "quantity": '. $articleQuantity .',
@@ -398,7 +398,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             $retargetingClient->setResponseFormat("json");
             $retargetingClient->setDecoding(false);
             $response = $retargetingClient->order->save($paramsAPI['orderInfo'], $paramsAPI['orderProducts']);
-            error_log(print_r($response, true)."\n", 3, Shopware()->DocPath() . '/response.log');
+//            error_log(print_r($response, true)."\n", 3, Shopware()->DocPath() . '/response.log');
         }
 
         Shopware()->Session()->offsetSet("userData", $userData);
