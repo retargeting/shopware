@@ -889,10 +889,12 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         return array(
             'label' => $this->getLabel(),
             'version' => $this->getVersion(),
-            'copyright' => 'Copyright (c) 2017, Retargeting SRL',
-            'author' => 'Retargeting SRL <info@retargeting.biz>',
+            'copyright' => 'Copyright (c) 2017, Retargeting Biz SRL',
+            'author' => 'Retargeting Biz SRL <info@retargeting.biz>',
+            'support' => 'info@retargeting.biz',
             'revision' => '1',
-            'link' => 'https://retargeting.biz/'
+            'link' => 'https://retargeting.biz/',
+            'description' => 'Personalized email content + Personalized live messages + SMS triggers to deliver to your customers the products they want to buy.'
         );
     }
 
