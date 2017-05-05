@@ -2,11 +2,12 @@
 /**
  * @category    Retargeting
  * @package     Retargeting_Tracker
- * @author      Retargeting <info@retargeting.biz>
- * @copyright   Copyright (c) Retargeting
+ * @author      Retargeting Team <info@retargeting.biz>
+ * @copyright   Copyright (c) Retargeting Biz
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 use Shopware\Bundle\StoreFrontBundle;
+
 class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Components_Plugin_Bootstrap
 {
     /**
@@ -29,77 +30,56 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
 
     private function subscribeEvents()
     {
-        $this->subscribeEvent(
-            'Enlight_Controller_Action_PostDispatchSecure_Frontend',                //Frontend listener
-            'onFrontEndPostDispatch'
-        );
+        $this->subscribeEvent('Enlight_Controller_Action_PostDispatchSecure_Frontend',
+            //Frontend listener
+            'onFrontEndPostDispatch');
 
-        $this->subscribeEvent(
-            'Shopware_Modules_Admin_SaveRegister_Successful',                       //Customer successfully registered
-            'onModulesAdminSaveRegisterSuccessful'
-        );
+        $this->subscribeEvent('Shopware_Modules_Admin_SaveRegister_Successful',
+            //Customer successfully registered
+            'onModulesAdminSaveRegisterSuccessful');
 
-        $this->subscribeEvent(                                                      //Newsletter successfully registered
-            'Shopware_Modules_Admin_Newsletter_Registration_Success',
-            'onModulesAdminNewsletterRegistrationSuccess'
-        );
+        $this->subscribeEvent( //Newsletter successfully registered
+            'Shopware_Modules_Admin_Newsletter_Registration_Success', 'onModulesAdminNewsletterRegistrationSuccess');
 
-        $this->subscribeEvent(
-            'Enlight_Controller_Action_PostDispatchSecure_Frontend_Account',        //Account Frontend listener
-            'onActionPostDispatchSecureFrontendAccount'
-        );
+        $this->subscribeEvent('Enlight_Controller_Action_PostDispatchSecure_Frontend_Account',
+            //Account Frontend listener
+            'onActionPostDispatchSecureFrontendAccount');
 
-        $this->subscribeEvent(
-            'Enlight_Controller_Action_PostDispatchSecure_Frontend_Checkout',       //Checkout Frontend listener
-            'onActionPostDispatchSecureFrontendCheckout'
-        );
+        $this->subscribeEvent('Enlight_Controller_Action_PostDispatchSecure_Frontend_Checkout',
+            //Checkout Frontend listener
+            'onActionPostDispatchSecureFrontendCheckout');
 
-        $this->subscribeEvent(
-            'Enlight_Controller_Action_PostDispatchSecure_Frontend_Newsletter',
-            'onActionPostDispatchSecureFrontendNewsletter'
-        );
+        $this->subscribeEvent('Enlight_Controller_Action_PostDispatchSecure_Frontend_Newsletter',
+            'onActionPostDispatchSecureFrontendNewsletter');
 
-        $this->subscribeEvent(
-            'Enlight_Controller_Action_PostDispatchSecure_Frontend_Forms',          //Contact Form Frontend listener
-            'onActionPostDispatchSecureFrontendForms'
-        );
+        $this->subscribeEvent('Enlight_Controller_Action_PostDispatchSecure_Frontend_Forms',
+            //Contact Form Frontend listener
+            'onActionPostDispatchSecureFrontendForms');
 
-        $this->subscribeEvent(
-            'Enlight_Controller_Action_PostDispatch_Frontend_Ticket',         //Contact Form redirect
-            'onActionPostDispatchFrontendTicket'
-        );
+        $this->subscribeEvent('Enlight_Controller_Action_PostDispatch_Frontend_Ticket', //Contact Form redirect
+            'onActionPostDispatchFrontendTicket');
 
-        $this->subscribeEvent(
-            'Enlight_Controller_Action_PostDispatchSecure_Frontend_Detail',
-            'onActionPostDispatchSecureFrontendDetail'
-        );
+        $this->subscribeEvent('Enlight_Controller_Action_PostDispatchSecure_Frontend_Detail',
+            'onActionPostDispatchSecureFrontendDetail');
 
-        $this->subscribeEvent(
-            'Shopware_Modules_Basket_AddArticle_Start',
-            'onModulesBasketAddArticleStart'
-        );
+        $this->subscribeEvent('Shopware_Modules_Basket_AddArticle_Start', 'onModulesBasketAddArticleStart');
 
-        $this->subscribeEvent(
-            'Shopware_Modules_Order_SaveOrder_ProcessDetails',
-            'onModulesOrderSaveOrderProcessDetails'
-        );
+        $this->subscribeEvent('Shopware_Modules_Order_SaveOrder_ProcessDetails',
+            'onModulesOrderSaveOrderProcessDetails');
 
-        $this->subscribeEvent(
-            'Enlight_Controller_Action_PostDispatchSecure_Frontend_Note',
-            'onActionPostDispatchSecureFrontendNote'
-        );
+        $this->subscribeEvent('Enlight_Controller_Action_PostDispatchSecure_Frontend_Note',
+            'onActionPostDispatchSecureFrontendNote');
 
-        $this->subscribeEvent(
-          'Enlight_Controller_Action_PostDispatchSecure_Frontend_Custom',
-            'onActionPostDispatchSecureFrontendCustom'
-        );
+        $this->subscribeEvent('Enlight_Controller_Action_PostDispatchSecure_Frontend_Custom',
+            'onActionPostDispatchSecureFrontendCustom');
 
-        $this->subscribeEvent(
-          'Shopware_Controllers_Frontend_Checkout::deleteArticleAction::before',
-            'onControllersFrontendCheckoutDeleteArticleActionBefore'
-        );
+        $this->subscribeEvent('Shopware_Controllers_Frontend_Checkout::deleteArticleAction::before',
+            'onControllersFrontendCheckoutDeleteArticleActionBefore');
     }
 
+    /**
+     * @param \Enlight_Hook_HookArgs $args
+     */
     public function onControllersFrontendCheckoutDeleteArticleActionBefore(Enlight_Hook_HookArgs $args)
     {
         /** @var \Shopware_Controllers_Frontend_Checkout $subject */
@@ -122,6 +102,9 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         $args->setReturn($return);
     }
 
+    /**
+     * @param \Enlight_Event_EventArgs $args
+     */
     public function onActionPostDispatchSecureFrontendCustom(Enlight_Event_EventArgs $args)
     {
         /** @var \Shopware_Controllers_Frontend_Custom $subject */
@@ -131,6 +114,9 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         $view->extendsTemplate('frontend/plugins/retargeting/helpPage.tpl');
     }
 
+    /**
+     * @param \Enlight_Event_EventArgs $args
+     */
     public function onActionPostDispatchSecureFrontendNote(Enlight_Event_EventArgs $args)
     {
         /** @var \Shopware_Controllers_Frontend_Note $subject */
@@ -140,13 +126,13 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         $action = $request->getActionName();
         $orderNumber = $request->getParam('ordernumber');
         $server = $request->getServer();
-        
+
         //sendProduct info before addToWishlist
         $article = Shopware()->Modules()->Articles()->sGetProductByOrdernumber($orderNumber);
         $stock = $article['instock'];
         $articleId = $article['articleID'];
         $articleName = htmlspecialchars($article['articleName']);
-        $articleUrl = "http://".$server['HTTP_HOST'].$request->getBaseUrl().'/'.$article['linkDetails'];
+        $articleUrl = "http://" . $server['HTTP_HOST'] . $request->getBaseUrl() . '/' . $article['linkDetails'];
         $articleImage = $article['image']['source'];
         $articlePrice = $article['price_numeric'];          //if promo this is the actual price
         $articlePromoPrice = $article['pseudoprice_numeric'];         //if not assign 0
@@ -166,8 +152,8 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
 
         foreach ($getCategories as $categoryId) {
             $categoryId = $categoryId['categoryID'];
-            $_categoryParent = 'false';                     // if category has no parent, then set it to false
-            $_categoryBreadcrumb = '[]';                    // and breadCrumb to []  , check documentation for more info
+            $_categoryParent = 'false'; // if category has no parent, then set it to false
+            $_categoryBreadcrumb = '[]'; // and breadCrumb to []  , check documentation for more info
             $categories = Shopware()->Modules()->Categories()->sGetCategoriesByParent($categoryId); // get all categories in path
             $articleCategory = Shopware()->Modules()->Categories()->sGetCategoryContent($categoryId);
             $categoryName = '"' . htmlspecialchars($articleCategory['name']) . '"';
@@ -197,7 +183,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                     }';
 
                 $_categoryBreadcrumb = '[' . implode(', ', $_categoryBreadcrumb) . ']';
-                //            $_categoryParent = '[{ ' . $_categoryParent . ', breadcrumb: ' . $_categoryBreadcrumb . ' }]';
+                // $_categoryParent = '[{ ' . $_categoryParent . ', breadcrumb: ' . $_categoryBreadcrumb . ' }]';
             }
 
             $categoryIds = array("id" => $categoryId);
@@ -214,92 +200,78 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         }
 
         if ($action === 'ajaxAdd') {
-           $referer = Shopware()->Session()->offsetGet('referer');
+            $referer = Shopware()->Session()->offsetGet('referer');
 
-           if ($referer === 'category') {
-               Shopware()->Session()->offsetUnset('referer');
-               $view->extendsTemplate('frontend/plugins/retargeting/clickImage.tpl');
-               $product = array(
-                   "id" => $articleId,
-                   "name" => $articleName,
-                   "url" => $articleUrl,
-                   "img"  => $articleImage,
-                   "price",
-                   "promo",
-                   "brand_id" => $articleBrandId,
-                   "brand_name" => $articleBrandName,
-                   "category" => $allCategories,
-                   "stock"
-               );
+            if ($referer === 'category') {
+                Shopware()->Session()->offsetUnset('referer');
+                $view->extendsTemplate('frontend/plugins/retargeting/clickImage.tpl');
+                $product = array(
+                    "id" => $articleId,
+                    "name" => $articleName,
+                    "url" => $articleUrl,
+                    "img" => $articleImage,
+                    "price",
+                    "promo",
+                    "brand_id" => $articleBrandId,
+                    "brand_name" => $articleBrandName,
+                    "category" => $allCategories,
+                    "stock"
+                );
 
-               if ($articlePromoPrice != 0 && $articlePromoPrice > $articlePrice) {
-                   $product['price'] = $articlePromoPrice;
-                   $product['promo'] = $articlePrice;
-               } else {
-                   $product['price'] = $articlePrice;
-                   $product['promo'] = 0;
-               }
-               if ($stock != 0) {
-                   $product['stock'] = 'true';
-               } else {
-                   $product['stock'] = 'false';
-               }
-               Shopware()->Session()->offsetSet("article", $product);
-           } else if ($referer === 'product') {
-               Shopware()->Session()->offsetUnset('referer');
-               Shopware()->Session()->offsetSet("article", $articleId);
-           }
-        }
-        else if ($action === 'index') {
-            $view->addTemplateDir($this->Path() . 'Views/');
-            $view->extendsTemplate('frontend/plugins/retargeting/wishlist.tpl');
-            $view->assign("article", Shopware()->Session()->offsetGet("article"));
-            Shopware()->Session()->offsetUnset("article");
+                if ($articlePromoPrice != 0 && $articlePromoPrice > $articlePrice) {
+                    $product['price'] = $articlePromoPrice;
+                    $product['promo'] = $articlePrice;
+                } else {
+                    $product['price'] = $articlePrice;
+                    $product['promo'] = 0;
+                }
+                if ($stock != 0) {
+                    $product['stock'] = 'true';
+                } else {
+                    $product['stock'] = 'false';
+                }
+                Shopware()->Session()->offsetSet("article", $product);
+            } else {
+                if ($referer === 'product') {
+                    Shopware()->Session()->offsetUnset('referer');
+                    Shopware()->Session()->offsetSet("article", $articleId);
+                }
+            }
+        } else {
+            if ($action === 'index') {
+                $view->addTemplateDir($this->Path() . 'Views/');
+                $view->extendsTemplate('frontend/plugins/retargeting/wishlist.tpl');
+                $view->assign("article", Shopware()->Session()->offsetGet("article"));
+                Shopware()->Session()->offsetUnset("article");
+            }
         }
     }
 
 
     private function createConfig()
     {
-        $this->Form()->setElement(
-            'text',
-            'TrackingAPIKey',
-            array(
+        $this->Form()->setElement('text', 'TrackingAPIKey', array(
                 'label' => 'Tracking API Key',
                 'required' => true,
-            )
-        );
+            ));
 
-        $this->Form()->setElement(
-            'text',
-            'RESTAPIKey',
-            array(
+        $this->Form()->setElement('text', 'RESTAPIKey', array(
                 'label' => 'REST API Key',
                 'required' => true,
-            )
-        );
+            ));
 
-        $this->Form()->setElement(
-          'text', 'tokenApiURL',
-            array(
-                'label' => 'token API URL',
-                'value' => '/retargeting/addDiscountCode',
-                'description' => '/retargeting/addDiscountCode',
-                'required' => true,
-            )
-        );
-
-        $this->Form()->setElement(
-          'text', 'ProductsFeedURL',
-            array(
+        $this->Form()->setElement('text', 'ProductsFeedURL', array(
                 'label' => 'Products Feed URL',
                 'value' => '/retargeting/products',
                 'description' => '/retargeting/products',
-                'required' => true
-            )
-        );
+                'required' => true,
+                'disabled' => true
+            ));
     }
 
+    /**
+     * @param \Enlight_Event_EventArgs $args
+     */
     public function onModulesOrderSaveOrderProcessDetails(Enlight_Event_EventArgs $args)
     {
         $articles = $args->get('details');
@@ -329,81 +301,85 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                 $variationCode = '';
 
                 // variations
-/*                $container = Shopware()->Container();
-                $additionalTextService = Shopware()->Container()->get('shopware_storefront.additional_text_service');
-                $context = $container->get('shopware_storefront.context_service')->getShopContext();
-                $product = Shopware()->Container()->get('shopware_storefront.list_product_service')->get($article['ordernumber'], $context);
-                $product = $additionalTextService->buildAdditionalText($product, $context);*/
+
+//                $container = Shopware()->Container();
+//                $additionalTextService = Shopware()->Container()->get('shopware_storefront.additional_text_service');
+//                $context = $container->get('shopware_storefront.context_service')->getShopContext();
+//                $product = Shopware()->Container()->get('shopware_storefront.list_product_service')->get($article['ordernumber'], $context);
+//                $product = $additionalTextService->buildAdditionalText($product, $context);
 
                 $products[] = '{
-                    "id": '. $articleId .',
-                    "quantity": '. $articleQuantity .',
-                    "price": ' . $articlePrice .',
+                    "id": ' . $articleId . ',
+                    "quantity": ' . $articleQuantity . ',
+                    "price": ' . $articlePrice . ',
                     "variation_code": "' . $variationCode . '"}';
                 $paramsAPI['orderProducts'][] = array(
-                    "id"             => $articleId,
-                    "quantity"       => $articleQuantity,
-                    "price"          => $articlePrice,
+                    "id" => $articleId,
+                    "quantity" => $articleQuantity,
+                    "price" => $articlePrice,
                     "variation_code" => $variationCode
                 );
             }
         }
-        $voucherModel = Shopware()->Models()->getRepository('Shopware\Models\Voucher\Voucher')->findOneBy(array('orderCode'=>$orderNumberDiscount));
+        $voucherModel = Shopware()->Models()->getRepository('Shopware\Models\Voucher\Voucher')->findOneBy(array('orderCode' => $orderNumberDiscount));
         if ($voucherModel) {
             $discount_code = $voucherModel->getVoucherCode();
         }
 
         $userData = array(
-            "order_no"      => $order_no,
-            "lastname"      => $sUserData["billingaddress"]["lastname"],
-            "firstname"     => $sUserData["billingaddress"]["firstname"],
-            "email"         => $sUserData["additional"]["user"]["email"],
-            "phone"         => $sUserData["billingaddress"]["phone"] ? $sUserData["billingaddress"]["phone"] : '',
-            "state"         => $sUserData["additional"]["state"]["statename"] ? $sUserData["additional"]["state"]["statename"] : '',
-            "city"          => $sUserData["billingaddress"]["city"] ? $sUserData["billingaddress"]["city"] : '',
-            "address"       => $sUserData["billingaddress"]["street"],
-            "birthday"      => $sUserData["additional"]["user"]["birthday"] ? date_format(date_create_from_format('Y-m-d',
-                                $sUserData["additional"]["user"]["birthday"]), 'd-m-Y') : '',
-            "discount"      => $discount,
+            "order_no" => $order_no,
+            "lastname" => $sUserData["billingaddress"]["lastname"],
+            "firstname" => $sUserData["billingaddress"]["firstname"],
+            "email" => $sUserData["additional"]["user"]["email"],
+            "phone" => $sUserData["billingaddress"]["phone"] ? $sUserData["billingaddress"]["phone"] : '',
+            "state" => $sUserData["additional"]["state"]["statename"] ? $sUserData["additional"]["state"]["statename"] : '',
+            "city" => $sUserData["billingaddress"]["city"] ? $sUserData["billingaddress"]["city"] : '',
+            "address" => $sUserData["billingaddress"]["street"],
+            "birthday" => $sUserData["additional"]["user"]["birthday"] ? date_format(date_create_from_format('Y-m-d',
+                $sUserData["additional"]["user"]["birthday"]), 'd-m-Y') : '',
+            "discount" => $discount,
             "discount_code" => $discount_code,
-            "shipping"      => $shipping,
-            "total"         => $total,
-            "products"      => "[".implode(", ", $products)."]"
+            "shipping" => $shipping,
+            "total" => $total,
+            "products" => "[" . implode(", ", $products) . "]"
         );
 
         $paramsAPI['orderInfo'] = array(
-            "order_no"      => $order_no,
-            "lastname"      => $sUserData["billingaddress"]["lastname"],
-            "firstname"     => $sUserData["billingaddress"]["firstname"],
-            "email"         => $sUserData["additional"]["user"]["email"],
-            "phone"         => $sUserData["billingaddress"]["phone"] ? $sUserData["billingaddress"]["phone"] : '',
-            "state"         => $sUserData["additional"]["state"]["statename"] ? $sUserData["additional"]["state"]["statename"] : '',
-            "city"          => $sUserData["billingaddress"]["city"] ? $sUserData["billingaddress"]["city"] : '',
-            "address"       => $sUserData["billingaddress"]["street"],
-            "birthday"      => $sUserData["additional"]["user"]["birthday"] ? date_format(date_create_from_format('Y-m-d',
+            "order_no" => $order_no,
+            "lastname" => $sUserData["billingaddress"]["lastname"],
+            "firstname" => $sUserData["billingaddress"]["firstname"],
+            "email" => $sUserData["additional"]["user"]["email"],
+            "phone" => $sUserData["billingaddress"]["phone"] ? $sUserData["billingaddress"]["phone"] : '',
+            "state" => $sUserData["additional"]["state"]["statename"] ? $sUserData["additional"]["state"]["statename"] : '',
+            "city" => $sUserData["billingaddress"]["city"] ? $sUserData["billingaddress"]["city"] : '',
+            "address" => $sUserData["billingaddress"]["street"],
+            "birthday" => $sUserData["additional"]["user"]["birthday"] ? date_format(date_create_from_format('Y-m-d',
                 $sUserData["additional"]["user"]["birthday"]), 'd-m-Y') : '',
-            "discount"      => $discount,
+            "discount" => $discount,
             "discount_code" => $discount_code,
-            "shipping"      => $shipping,
-            "total"         => $total
+            "shipping" => $shipping,
+            "total" => $total
         );
 
         $apiKey = $this->Config()->get('TrackingAPIKey');
         $token = $this->Config()->get('RESTAPIKey');
-        if($apiKey && $apiKey != "" && $token && $token != "") {
-//            require_once "lib/api/Retargeting_REST_API_Client.php";
+        if ($apiKey && $apiKey != "" && $token && $token != "") {
+            //            require_once "lib/api/Retargeting_REST_API_Client.php";
             require_once $this->Path() . "lib/api/Retargeting_REST_API_Client.php";  //safer
 
             $retargetingClient = new Retargeting_REST_API_Client($token);
             $retargetingClient->setResponseFormat("json");
             $retargetingClient->setDecoding(false);
             $response = $retargetingClient->order->save($paramsAPI['orderInfo'], $paramsAPI['orderProducts']);
-//            error_log(print_r($response, true)."\n", 3, Shopware()->DocPath() . '/response.log');
+            //            error_log(print_r($response, true)."\n", 3, Shopware()->DocPath() . '/response.log');
         }
 
         Shopware()->Session()->offsetSet("userData", $userData);
     }
 
+    /**
+     * @param \Enlight_Event_EventArgs $args
+     */
     public function onModulesBasketAddArticleStart(Enlight_Event_EventArgs $args)
     {
         $subject = $args->get('subject');
@@ -426,10 +402,10 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             foreach ($old_selected as $selection) {
                 $variationsCode[] = $selection['option_name'];
                 $instock = $selection['stock'];
-                $_variationsDetails[] = '"'.$selection['option_name'].'": {
-                    "category_name": "'.htmlspecialchars($selection['group_name']).'",
-                    "category" : "'.htmlspecialchars($selection['group_name']).'",
-                    "value" : "'.htmlspecialchars($selection['option_name']).'"
+                $_variationsDetails[] = '"' . $selection['option_name'] . '": {
+                    "category_name": "' . htmlspecialchars($selection['group_name']) . '",
+                    "category" : "' . htmlspecialchars($selection['group_name']) . '",
+                    "value" : "' . htmlspecialchars($selection['option_name']) . '"
                 }';
             }
             $stock = false;
@@ -439,10 +415,10 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             $code = implode('-', $variationsCode);
             $variationsDetails = implode(', ', $_variationsDetails);
             $cartData['variation'] = '{
-                 "code": "'.$code.'",
-                 "stock": "'.$stock.'",
+                 "code": "' . $code . '",
+                 "stock": "' . $stock . '",
                  "details": {
-                    '.$variationsDetails.'
+                    ' . $variationsDetails . '
                  }
             }';
         } else {
@@ -451,6 +427,9 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         Shopware()->Session()->offsetSet("cartData", $cartData);
     }
 
+    /**
+     * @param \Enlight_Event_EventArgs $args
+     */
     public function onActionPostDispatchSecureFrontendDetail(Enlight_Event_EventArgs $args)
     {
         /** @var \Shopware_Controllers_Frontend_Detail $subject */
@@ -461,14 +440,14 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         $stock = $article['instock'];
         $selected = array();
         $cartDataProducts = array();
-        foreach($article['sConfigurator'] as $configuratorGroup) {
-            foreach($configuratorGroup['values'] as $option) {
+        foreach ($article['sConfigurator'] as $configuratorGroup) {
+            foreach ($configuratorGroup['values'] as $option) {
                 if ($option['selected']) {
                     $selection = array(
-                        "group_name"      => $configuratorGroup['groupname'],
-                        "option_name"     => $option['optionname'],
+                        "group_name" => $configuratorGroup['groupname'],
+                        "option_name" => $option['optionname'],
                         "option_selected" => $option['selected'],
-                        "stock"           => $stock
+                        "stock" => $stock
                     );
                     array_push($selected, $selection);
                 }
@@ -586,6 +565,9 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         Shopware()->Session()->offsetSet("referer", "product");
     }
 
+    /**
+     * @param \Enlight_Event_EventArgs $args
+     */
     public function onActionPostDispatchFrontendTicket(Enlight_Event_EventArgs $args)   //Dispatch, not Dispatch Secure
     {                                                                                   //no template available
         /** @var \Shopware_Controllers_Frontend_Ticket $subject */
@@ -606,6 +588,9 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         }
     }
 
+    /**
+     * @param \Enlight_Event_EventArgs $args
+     */
     public function onActionPostDispatchSecureFrontendForms(Enlight_Event_EventArgs $args)
     {
         /** @var \Shopware_Controllers_Frontend_Forms $subject */
@@ -614,16 +599,19 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         $view->addTemplateDir($this->Path() . 'Views/');
         $request = $subject->Request();
         $success = $request->getParam('success');
-        $setEmailData = Shopware()->Session()->offsetGet("setEmail");       //get session variable for setEmail function
-        if ($setEmailData) {                                    //if set
-            $view->assign("setEmail", $setEmailData);           //assign variables to the template setEmail.tpl
+        $setEmailData = Shopware()->Session()->offsetGet("setEmail"); //get session variable for setEmail function
+        if ($setEmailData) { //if set
+            $view->assign("setEmail", $setEmailData); //assign variables to the template setEmail.tpl
         }
-        if ($success === '1') {                                 //if form has been sent successfully
-            Shopware()->Session()->offsetUnset("setEmail");     //unset the session variable
+        if ($success === '1') { //if form has been sent successfully
+            Shopware()->Session()->offsetUnset("setEmail"); //unset the session variable
         }
-        $view->extendsTemplate('frontend/plugins/retargeting/setEmail.tpl');        //extendsTemplate setEmail.tpl with javascript function setEmail
+        $view->extendsTemplate('frontend/plugins/retargeting/setEmail.tpl'); //extendsTemplate setEmail.tpl with javascript function setEmail
     }
 
+    /**
+     * @param \Enlight_Event_EventArgs $args
+     */
     public function onActionPostDispatchSecureFrontendNewsletter(Enlight_Event_EventArgs $args)
     {
         /** @var \Shopware_Controllers_Frontend_Newsletter $subject */
@@ -639,22 +627,28 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             "city" => $request->getPost('city')
         );
 
-        if ($setEmailData) {                                    //if set
-            $view->assign("setEmail", $setEmailData);           //assign only the email to the setEmail.tpl template
+        if ($setEmailData) { //if set
+            $view->assign("setEmail", $setEmailData); //assign only the email to the setEmail.tpl template
             if ($userData) {
-                $view->assign("setEmail", $userData);           //assign name, email, city to the setEmail.tpl template
+                $view->assign("setEmail", $userData); //assign name, email, city to the setEmail.tpl template
             }
         }
         Shopware()->Session()->offsetUnset("setEmail");
-        $view->extendsTemplate('frontend/plugins/retargeting/setEmail.tpl');        //extendsTemplate setEmail.tpl with javascript function setEmail
+        $view->extendsTemplate('frontend/plugins/retargeting/setEmail.tpl'); //extendsTemplate setEmail.tpl with javascript function setEmail
     }
 
+    /**
+     * @param \Enlight_Event_EventArgs $args
+     */
     public function onModulesAdminNewsletterRegistrationSuccess(Enlight_Event_EventArgs $args)
     {
         $email = $args->get('email');
         Shopware()->Session()->offsetSet("setEmail", $email);
     }
 
+    /**
+     * @param \Enlight_Event_EventArgs $args
+     */
     public function onModulesAdminSaveRegisterSuccessful(Enlight_Event_EventArgs $args)
     {
         $sUserData = Shopware()->Modules()->Admin()->sGetUserData();
@@ -667,10 +661,13 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                 $sUserData["additional"]["user"]["birthday"]), 'd-m-Y') : ''
         );
 
-        Shopware()->Session()->offsetSet("setEmail", $userData);       //set session variable for setEmail function
+        Shopware()->Session()->offsetSet("setEmail", $userData); //set session variable for setEmail function
     }
 
-    public function onActionPostDispatchSecureFrontendCheckout(Enlight_Event_EventArgs $args)       //Checkout page
+    /**
+     * @param \Enlight_Event_EventArgs $args
+     */
+    public function onActionPostDispatchSecureFrontendCheckout(Enlight_Event_EventArgs $args) //Checkout page
     {
         /** @var \Shopware_Controllers_Frontend_Checkout $subject */
 
@@ -678,12 +675,12 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         $view = $subject->View();
         $view->addTemplateDir($this->Path() . 'Views/');
 
-        $setEmailData = Shopware()->Session()->offsetGet("setEmail");       //get session variable for setEmail function
-        if ($setEmailData) {                                    //if set
-            $view->assign("setEmail", $setEmailData);           //assign variables to the template setEmail.tpl
+        $setEmailData = Shopware()->Session()->offsetGet("setEmail"); //get session variable for setEmail function
+        if ($setEmailData) { //if set
+            $view->assign("setEmail", $setEmailData); //assign variables to the template setEmail.tpl
         }
-        Shopware()->Session()->offsetUnset("setEmail");         //unset session variable, if not seEmail function is called anytime when Account Controller is dispatched
-        $view->extendsTemplate('frontend/plugins/retargeting/setEmail.tpl');        //extendsTemplate setEmail.tpl with javascript function setEmail
+        Shopware()->Session()->offsetUnset("setEmail"); //unset session variable, if not seEmail function is called anytime when Account Controller is dispatched
+        $view->extendsTemplate('frontend/plugins/retargeting/setEmail.tpl'); //extendsTemplate setEmail.tpl with javascript function setEmail
 
         $request = $subject->Request();
         $action = $request->getActionName();
@@ -697,7 +694,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                     $view->extendsTemplate('frontend/plugins/retargeting/removeFromCart.tpl');
                 }
             }
-        Shopware()->Session()->offsetUnset("delete");
+            Shopware()->Session()->offsetUnset("delete");
         }
 
         if ($action === 'confirm') {
@@ -728,7 +725,10 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         }
     }
 
-    public function onActionPostDispatchSecureFrontendAccount(Enlight_Event_EventArgs $args)       // Account page
+    /**
+     * @param \Enlight_Event_EventArgs $args
+     */
+    public function onActionPostDispatchSecureFrontendAccount(Enlight_Event_EventArgs $args) // Account page
     {
         /** @var \Shopware_Controllers_Frontend_Account $subject */
 
@@ -744,7 +744,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         }
 
         Shopware()->Session()->offsetUnset("setEmail");
-        if ($action === 'login') {                                      //if action is login
+        if ($action === 'login') { //if action is login
             $sUserData = Shopware()->Modules()->Admin()->sGetUserData();
             $userData = array(
                 "email" => $sUserData["additional"]["user"]["email"],
@@ -755,12 +755,15 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                     $sUserData["additional"]["user"]["birthday"]), 'd-m-Y') : ''
             );
 
-            Shopware()->Session()->offsetSet("setEmail", $userData);      //then set the session variable for setEmail
+            Shopware()->Session()->offsetSet("setEmail", $userData); //then set the session variable for setEmail
         }
         $view->extendsTemplate('frontend/plugins/retargeting/setEmail.tpl');
     }
 
-    public function onFrontEndPostDispatch(Enlight_Event_EventArgs $args)   //All Frontend pages
+    /**
+     * @param \Enlight_Event_EventArgs $args
+     */
+    public function onFrontEndPostDispatch(Enlight_Event_EventArgs $args) //All Frontend pages
     {
 
         /** @var \Enlight_Controller_Action $controller */
@@ -774,12 +777,11 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
 
         $view->addTemplateDir($this->Path() . 'Views/');
 
-        if ($controllerName === 'listing' && $action === 'index') {             // category page
-            //error_log(print_r($var, true)."\n", 3, Shopware()->DocPath() . '/errorAction.log');
-            Shopware()->Session()->offsetSet("referer","category");
+        if ($controllerName === 'listing' && $action === 'index') { // category page
+            Shopware()->Session()->offsetSet("referer", "category");
             $categoryId = $request->getParam('sCategory');  // current Category Id
-            $_categoryParent = 'false';                     // if category has no parent, then set it to false
-            $_categoryBreadcrumb = '[]';                    // and breadCrumb to []  , check documentation for more info
+            $_categoryParent = 'false'; // if category has no parent, then set it to false
+            $_categoryBreadcrumb = '[]'; // and breadCrumb to []  , check documentation for more info
             $categories = Shopware()->Modules()->Categories()->sGetCategoriesByParent($categoryId); // get all categories in path
 
             $categories_no = count($categories);
@@ -853,8 +855,8 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                     array_push($products, $item['articleID']);
                 }
             }
-            $products = array_slice($products, 0, count($products)-2);
-            $checkoutid = '['. implode(", ", $products) . ']';
+            $products = array_slice($products, 0, count($products) - 2);
+            $checkoutid = '[' . implode(", ", $products) . ']';
             $view->assign('checkoutid', $checkoutid);
             $view->extendsTemplate('frontend/plugins/retargeting/checkout.tpl');
         }
@@ -884,6 +886,10 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         return "Retargeting Tracker";
     }
 
+    /**
+     * Returns Plugin Info
+     * @return array
+     */
     public function getInfo()
     {
         return array(

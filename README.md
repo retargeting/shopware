@@ -22,10 +22,10 @@ zip -r Retargeting.zip Frontend/
 * Activate Retargeting plugin
 * Enter your Tracking API KEY & REST API KEY
 ### License
-This work is licensed under a **Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0) License** because I couldn't find a license with an even longer name.
+This work is licensed under a **http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)**.
 
 ### Dependencies
-Tested on Shopware 5.2.21
+Tested on Shopware 5.2.21 & 5.2.22
 
 Shopware 5.2.20 CSRF token problem. Check UPGRADE-5.2.md [https://github.com/shopware/shopware/blob/5.2/UPGRADE-5.2.md]
 
