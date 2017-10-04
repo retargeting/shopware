@@ -895,7 +895,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
      */
     public function getVersion()
     {
-        return '1.0.0';
+        return '1.0.2';
     }
 
     /**
