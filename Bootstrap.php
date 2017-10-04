@@ -389,6 +389,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
 
         $articleId = Shopware()->Modules()->Articles()->sGetArticleIdByOrderNumber($orderNumber);
         $selected = Shopware()->Session()->offsetGet("selected");
+        
         $cartData = array(
             "id" => $articleId,
             "quantity" => $quantity,
@@ -821,6 +822,12 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                 $view->extendsTemplate('frontend/plugins/retargeting/wishlist.tpl');
                 Shopware()->Session()->offsetUnset("article");
             }
+            $cartData = Shopware()->Session()->offsetGet("cartData");
+            if ($cartData) {
+                $view->assign("cartData", $cartData);
+                $view->extendsTemplate('frontend/plugins/retargeting/addCart.tpl');
+                Shopware()->Session()->offsetUnset("cartData");
+            }
         }
 
         if ($controllerName === 'listing' && $action === 'manufacturer') {      // brand(manufacturer) page
@@ -832,6 +839,13 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             $view->extendsTemplate('frontend/plugins/retargeting/brand.tpl');
             $view->assign('brand_id', $brandId);
             $view->assign('brand_name', $brandName);
+            
+            $cartData = Shopware()->Session()->offsetGet("cartData");
+            if ($cartData) {
+                $view->assign("cartData", $cartData);
+                $view->extendsTemplate('frontend/plugins/retargeting/addCart.tpl');
+                Shopware()->Session()->offsetUnset("cartData");
+            }
         }
 
         if ($controllerName === 'detail') {
@@ -846,16 +860,25 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         if ($controllerName === 'checkout') {
             if ($action === 'cart') {               // used for setCartUrl
                 $view->assign('cart', $action);
+                
+                $cartData = Shopware()->Session()->offsetGet("cartData");
+                if ($cartData) {
+                    $view->assign("cartData", $cartData);
+                    $view->extendsTemplate('frontend/plugins/retargeting/addCart.tpl');
+                    Shopware()->Session()->offsetUnset("cartData");
+                }
             }
 
             $products = array();
             $content = Shopware()->Modules()->Basket()->sGetBasket();
+            
             foreach ($content as $items) {
                 foreach ($items as $item) {
-                    array_push($products, $item['articleID']);
+                    $productIds = (int)$item['articleID'];
+                    $products[] = $productIds;
                 }
             }
-            $products = array_slice($products, 0, count($products) - 2);
+            
             $checkoutid = '[' . implode(", ", $products) . ']';
             $view->assign('checkoutid', $checkoutid);
             $view->extendsTemplate('frontend/plugins/retargeting/checkout.tpl');
@@ -895,7 +918,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         return array(
             'label' => $this->getLabel(),
             'version' => $this->getVersion(),
-            'copyright' => 'Copyright (c) 2017, Retargeting Biz SRL',
+            'copyright' => 'Copyright © ' . date('Y') . ', Retargeting Biz SRL',
             'author' => 'Retargeting Biz SRL <info@retargeting.biz>',
             'support' => 'info@retargeting.biz',
             'revision' => '1',
