@@ -25,7 +25,7 @@ zip -r Retargeting.zip Frontend/
 This work is licensed under a **http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)**.
 
 ### Dependencies
-Tested on Shopware 5.2.21 & 5.2.22
+Tested on Shopware 5.2.2x & 5.3.x
 
 Shopware 5.2.20 CSRF token problem. Check UPGRADE-5.2.md [https://github.com/shopware/shopware/blob/5.2/UPGRADE-5.2.md]
 
