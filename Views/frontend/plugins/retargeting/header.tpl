@@ -19,7 +19,7 @@
     {else}
 
         <script type="text/javascript">
-            console.info("Retargeting Tracker Error: Please set the Domain API Key from your Retargeting Account.");
+            console.info("Retargeting Tracker Error: Please set the Tracking API Key from your Retargeting.Biz account.");
         </script>
 
     {/if}

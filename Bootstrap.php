@@ -260,6 +260,34 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                 'required' => true,
             ));
 
+        $this->Form()->setElement('checkbox', 'RecomengCategory', array(
+            'label' => 'Recommendation Engine Category Page',
+            'required' => false,
+            'value' => true,
+            'description' => 'Displays Recommendation Engine products carousel on Category Page',
+        ));
+
+        $this->Form()->setElement('checkbox', 'RecomengProduct', array(
+            'label' => 'Recommendation Engine Product Page',
+            'required' => false,
+            'value' => true,
+            'description' => 'Displays Recommendation Engine products carousel on Product Page',
+        ));
+
+        $this->Form()->setElement('checkbox', 'RecomengCheckout', array(
+            'label' => 'Recommendation Engine Checkout Page',
+            'required' => false,
+            'value' => true,
+            'description' => 'Displays Recommendation Engine products carousel on Checkout Page',
+        ));
+
+        $this->Form()->setElement('checkbox', 'RecomengThankYou', array(
+            'label' => 'Recommendation Engine Thank You Page',
+            'required' => false,
+            'value' => true,
+            'description' => 'Displays Recommendation Engine products carousel on Thank You Page',
+        ));
+
         $this->Form()->setElement('text', 'ProductsFeedURL', array(
                 'label' => 'Products Feed URL',
                 'value' => '/retargeting/products',
@@ -528,6 +556,8 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
 
         $view->addTemplateDir($this->Path() . 'Views/');
         $view->extendsTemplate('frontend/plugins/retargeting/product.tpl');
+        $view->assign('recomengProductPage', $this->Config()->get('RecomengProduct'));
+        $view->extendsTemplate('frontend/plugins/recomeng/product.tpl');
         $view->extendsTemplate('frontend/plugins/retargeting/clickImage.tpl');
         if ($article['sConfigurator']) {
             $view->extendsTemplate('frontend/plugins/retargeting/setVariation.tpl');
@@ -721,6 +751,8 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             if ($userData) {
                 $view->assign("userData", $userData);
                 $view->extendsTemplate('frontend/plugins/retargeting/order.tpl');
+                $view->assign('recomengThankYou', $this->Config()->get('RecomengThankYou'));
+                $view->extendsTemplate('frontend/plugins/recomeng/order.tpl');
             }
             Shopware()->Session()->offsetUnset("userData");
         }
@@ -776,6 +808,8 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         $controllerName = $request->getControllerName();
         $action = $request->getActionName();
 
+//        $this->displayRecomengHome();
+
         $view->addTemplateDir($this->Path() . 'Views/');
 
         if ($controllerName === 'listing' && $action === 'index') { // category page
@@ -816,6 +850,10 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             $view->extendsTemplate('frontend/plugins/retargeting/category.tpl');
             $view->assign('_categoryParent', $_categoryParent);     // send to template
             $view->assign('_categoryBreadcrumb', $_categoryBreadcrumb);
+
+            $view->assign('recomengCategoryPage', $this->Config()->get('RecomengCategory'));
+            $view->extendsTemplate('frontend/plugins/recomeng/category.tpl');
+
             $wishlist = Shopware()->Session()->offsetGet("article");
             if ($wishlist) {
                 $view->assign("article", $wishlist);
@@ -882,10 +920,17 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             $checkoutid = '[' . implode(", ", $products) . ']';
             $view->assign('checkoutid', $checkoutid);
             $view->extendsTemplate('frontend/plugins/retargeting/checkout.tpl');
+
+            if ($request->getActionName() != 'finish') {
+                $view->assign('recomengCheckoutPage', $this->Config()->get('RecomengCheckout'));
+                $view->extendsTemplate('frontend/plugins/recomeng/checkout.tpl');
+            }
+
         }
 
         $view->extendsTemplate('frontend/plugins/retargeting/header.tpl');
         $view->assign('retargeting_domain_api', $this->Config()->get('TrackingAPIKey'));
+
     }
 
     /**
@@ -927,4 +972,31 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         );
     }
 
+//    public function validateEvent($controller, $ctrl = null)
+//    {
+//        $request = $controller->Request();
+//        $response = $controller->Response();
+//        $view = $controller->View();
+//
+//        if (!$request->isDispatched()
+//            || $response->isException()
+//            || (!is_null($ctrl) && $request->getControllerName() != $ctrl)
+//            || !$view->hasTemplate()
+//        ) {
+//            return false;
+//        }
+//
+//        return true;
+//    }
+//
+//    public function displayRecomengHome(Enlight_Controller_ActionEventArgs $args)
+//    {
+//        if (!$this->validateEvent($args->getSubject(), 'index')) {
+//            return;
+//        }
+//
+//        $view = $args->getSubject()->View();
+//        $view->addTemplateDir($this->Path() . 'Views/');
+//        $view->extendsTemplate('frontend/plugins/recomeng/homepage.tpl');
+//    }
 }
