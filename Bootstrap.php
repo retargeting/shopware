@@ -24,10 +24,6 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
 
         $this->createConfig();
 
-        $this->getLogo();
-
-        $this->fixLogo();
-
         return true;
     }
 
