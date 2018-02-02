@@ -1,4 +1,9 @@
-# Retargeting Tracker
+![Retargeting.Biz Logo](https://s3.amazonaws.com/techpluto/wp-content/uploads/2017/06/29185746/techp_1194697.png)
+
+# Retargeting Tracker plugin for Shopware 5.2.2.x & 5.3.x
+Retargeting Tracker plugin installs the required tagging for [Retargeting.Biz](https://Retargeting.biz)'s features in Shopware based online shops, providing your eCommerce business with all the necessary tools to build a strong conversion rate optimization strategy.
+
+In order to implement the Retargeting Tracker plugin you need to setup a [Retargeting.Biz](https://Retargeting.biz) account.
 
 ### Installation
 ```shell
