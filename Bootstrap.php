@@ -253,45 +253,54 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         $this->Form()->setElement('text', 'TrackingAPIKey', array(
                 'label' => 'Tracking API Key',
                 'required' => true,
+                'description' => 'You can get the Tracking API Key from your Retargeting.Biz account.',
             ));
 
         $this->Form()->setElement('text', 'RESTAPIKey', array(
                 'label' => 'REST API Key',
                 'required' => true,
+                'description' => 'You can get the REST API Key from your Retargeting.Biz account.',
             ));
+
+        $this->Form()->setElement('checkbox', 'RecomengHome', array(
+            'label' => 'Recommendation Engine Home Page',
+            'required' => false,
+            'value' => true,
+            'description' => 'Displays Recommendation Engine products carousel on Home Page.',
+        ));
 
         $this->Form()->setElement('checkbox', 'RecomengCategory', array(
             'label' => 'Recommendation Engine Category Page',
             'required' => false,
             'value' => true,
-            'description' => 'Displays Recommendation Engine products carousel on Category Page',
+            'description' => 'Displays Recommendation Engine products carousel on Category Page.',
         ));
 
         $this->Form()->setElement('checkbox', 'RecomengProduct', array(
             'label' => 'Recommendation Engine Product Page',
             'required' => false,
             'value' => true,
-            'description' => 'Displays Recommendation Engine products carousel on Product Page',
+            'description' => 'Displays Recommendation Engine products carousel on Product Page.',
         ));
 
         $this->Form()->setElement('checkbox', 'RecomengCheckout', array(
             'label' => 'Recommendation Engine Checkout Page',
             'required' => false,
             'value' => true,
-            'description' => 'Displays Recommendation Engine products carousel on Checkout Page',
+            'description' => 'Displays Recommendation Engine products carousel on Checkout Page.',
         ));
 
         $this->Form()->setElement('checkbox', 'RecomengThankYou', array(
             'label' => 'Recommendation Engine Thank You Page',
             'required' => false,
             'value' => true,
-            'description' => 'Displays Recommendation Engine products carousel on Thank You Page',
+            'description' => 'Displays Recommendation Engine products carousel on Thank You Page.',
         ));
 
         $this->Form()->setElement('text', 'ProductsFeedURL', array(
                 'label' => 'Products Feed URL',
                 'value' => '/retargeting/products',
-                'description' => '/retargeting/products',
+                'description' => 'Sends an update to Retargeting.Biz whenever a product has been updated.',
                 'required' => true,
                 'disabled' => true
             ));
@@ -808,9 +817,12 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         $controllerName = $request->getControllerName();
         $action = $request->getActionName();
 
-//        $this->displayRecomengHome();
-
         $view->addTemplateDir($this->Path() . 'Views/');
+
+        if ($controllerName === 'index' && $action === 'index') {
+            $view->assign('recomengHomePage', $this->Config()->get('RecomengHome'));
+            $view->extendsTemplate('frontend/plugins/recomeng/homepage.tpl');
+        }
 
         if ($controllerName === 'listing' && $action === 'index') { // category page
             Shopware()->Session()->offsetSet("referer", "category");
@@ -940,7 +952,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
      */
     public function getVersion()
     {
-        return '1.0.2';
+        return '1.1.0';
     }
 
     /**
@@ -972,31 +984,4 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         );
     }
 
-//    public function validateEvent($controller, $ctrl = null)
-//    {
-//        $request = $controller->Request();
-//        $response = $controller->Response();
-//        $view = $controller->View();
-//
-//        if (!$request->isDispatched()
-//            || $response->isException()
-//            || (!is_null($ctrl) && $request->getControllerName() != $ctrl)
-//            || !$view->hasTemplate()
-//        ) {
-//            return false;
-//        }
-//
-//        return true;
-//    }
-//
-//    public function displayRecomengHome(Enlight_Controller_ActionEventArgs $args)
-//    {
-//        if (!$this->validateEvent($args->getSubject(), 'index')) {
-//            return;
-//        }
-//
-//        $view = $args->getSubject()->View();
-//        $view->addTemplateDir($this->Path() . 'Views/');
-//        $view->extendsTemplate('frontend/plugins/recomeng/homepage.tpl');
-//    }
 }
