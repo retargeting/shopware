@@ -249,6 +249,11 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
 
     private function createConfig()
     {
+        $this->Form()->setElement('button', 'openForm', array(
+            'label' => 'Create a Retargeting.Biz account!',
+            'handler' => 'function () { window.open("https://retargeting.biz/signup/"); }',
+        ));
+
         $this->Form()->setElement('text', 'TrackingAPIKey', array(
                 'label' => 'Tracking API Key',
                 'required' => true,
