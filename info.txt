@@ -1,3 +1,5 @@
+<p><img src="https://retargeting.biz/static/images/logo-black.png"></p>
+
 <b>Retargeting Tracker</b> plugin installs the required tagging for Retargeting.Biz's features in Shopware based online shops, providing your eCommerce business with all the necessary tools to build a strong conversion rate optimization strategy.</p>
 
 In order to implement the Retargeting Tracker plugin you need to setup a <a href="https://www.Retargeting.Biz" target="_blank" rel="noopener noreferrer">Retargeting.Biz</a> account.

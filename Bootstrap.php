@@ -298,6 +298,13 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             'description' => 'Displays Recommendation Engine products carousel on Thank You Page.',
         ));
 
+        $form->setElement('checkbox', 'RecomengSearch', array(
+            'label' => 'Recommendation Engine Search Page',
+            'required' => false,
+            'value' => true,
+            'description' => 'Displays Recommendation Engine products carousel on Search Page.',
+        ));
+
         $form->setElement('text', 'ProductsFeedURL', array(
                 'label' => 'Products Feed URL',
                 'value' => '/retargeting/products',
@@ -806,6 +813,11 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         if ($controllerName === 'index' && $action === 'index') {
             $view->assign('recomengHomePage', $this->Config()->get('RecomengHome'));
             $view->extendsTemplate('frontend/plugins/recomeng/homepage.tpl');
+        }
+
+        if ($controllerName === 'search' && $action === 'defaultSearch') {
+            $view->assign('recomengSearchPage', $this->Config()->get('RecomengSearch'));
+            $view->extendsTemplate('frontend/plugins/recomeng/search.tpl');
         }
 
         if ($controllerName === 'listing' && $action === 'index') { // category page
