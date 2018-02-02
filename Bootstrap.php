@@ -20,8 +20,6 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
 
         $this->subscribeEvents();
 
-        $this->registerController('frontend', 'retargeting');
-
         $this->createConfig();
 
         return true;
@@ -130,14 +128,13 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         $article = Shopware()->Modules()->Articles()->sGetProductByOrdernumber($orderNumber);
         $stock = $article['instock'];
         $articleId = $article['articleID'];
-        $articleName = htmlspecialchars($article['articleName']);
+        $articleName = htmlspecialchars_decode($article['articleName']);
         $articleUrl = "http://" . $server['HTTP_HOST'] . $request->getBaseUrl() . '/' . $article['linkDetails'];
         $articleImage = $article['image']['source'];
         $articlePrice = $article['price_numeric'];          //if promo this is the actual price
         $articlePromoPrice = $article['pseudoprice_numeric'];         //if not assign 0
         $articleBrandId = $article['supplierID'];
-        $articleBrandName = $article['supplierName'];
-        $articleName = htmlspecialchars($article['articleName']);
+        $articleBrandName = htmlspecialchars_decode($article['supplierName']);
 
         $sql = "SELECT ac.categoryID
                 FROM s_articles_categories ac
@@ -146,7 +143,6 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         $params = array($articleId);
         $getCategories = Shopware()->Db()->fetchAll($sql, $params);     //get all Categories for product
 
-        $categoryId = $article['categoryID'];
         $allCategories = array();
 
         foreach ($getCategories as $categoryId) {
@@ -155,7 +151,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             $_categoryBreadcrumb = '[]'; // and breadCrumb to []  , check documentation for more info
             $categories = Shopware()->Modules()->Categories()->sGetCategoriesByParent($categoryId); // get all categories in path
             $articleCategory = Shopware()->Modules()->Categories()->sGetCategoryContent($categoryId);
-            $categoryName = '"' . htmlspecialchars($articleCategory['name']) . '"';
+            $categoryName = '"' . htmlspecialchars_decode($articleCategory['name']) . '"';
             $categories_no = count($categories);
             if ($categories_no > 1) {
                 $_categoryBreadcrumb = array();
@@ -182,7 +178,6 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                     }';
 
                 $_categoryBreadcrumb = '[' . implode(', ', $_categoryBreadcrumb) . ']';
-                // $_categoryParent = '[{ ' . $_categoryParent . ', breadcrumb: ' . $_categoryBreadcrumb . ' }]';
             }
 
             $categoryIds = array("id" => $categoryId);
@@ -249,59 +244,61 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
 
     private function createConfig()
     {
-        $this->Form()->setElement('button', 'openForm', array(
+        $form = $this->Form();
+
+        $form->setElement('button', 'openCreateAccount', array(
             'label' => 'Create a Retargeting.Biz account!',
             'handler' => 'function () { window.open("https://retargeting.biz/signup/"); }',
         ));
 
-        $this->Form()->setElement('text', 'TrackingAPIKey', array(
+        $form->setElement('text', 'TrackingAPIKey', array(
                 'label' => 'Tracking API Key',
                 'required' => true,
                 'description' => 'You can get the Tracking API Key from your Retargeting.Biz account.',
             ));
 
-        $this->Form()->setElement('text', 'RESTAPIKey', array(
+        $form->setElement('text', 'RESTAPIKey', array(
                 'label' => 'REST API Key',
                 'required' => true,
                 'description' => 'You can get the REST API Key from your Retargeting.Biz account.',
             ));
 
-        $this->Form()->setElement('checkbox', 'RecomengHome', array(
+        $form->setElement('checkbox', 'RecomengHome', array(
             'label' => 'Recommendation Engine Home Page',
             'required' => false,
             'value' => true,
             'description' => 'Displays Recommendation Engine products carousel on Home Page.',
         ));
 
-        $this->Form()->setElement('checkbox', 'RecomengCategory', array(
+        $form->setElement('checkbox', 'RecomengCategory', array(
             'label' => 'Recommendation Engine Category Page',
             'required' => false,
             'value' => true,
             'description' => 'Displays Recommendation Engine products carousel on Category Page.',
         ));
 
-        $this->Form()->setElement('checkbox', 'RecomengProduct', array(
+        $form->setElement('checkbox', 'RecomengProduct', array(
             'label' => 'Recommendation Engine Product Page',
             'required' => false,
             'value' => true,
             'description' => 'Displays Recommendation Engine products carousel on Product Page.',
         ));
 
-        $this->Form()->setElement('checkbox', 'RecomengCheckout', array(
+        $form->setElement('checkbox', 'RecomengCheckout', array(
             'label' => 'Recommendation Engine Checkout Page',
             'required' => false,
             'value' => true,
             'description' => 'Displays Recommendation Engine products carousel on Checkout Page.',
         ));
 
-        $this->Form()->setElement('checkbox', 'RecomengThankYou', array(
+        $form->setElement('checkbox', 'RecomengThankYou', array(
             'label' => 'Recommendation Engine Thank You Page',
             'required' => false,
             'value' => true,
             'description' => 'Displays Recommendation Engine products carousel on Thank You Page.',
         ));
 
-        $this->Form()->setElement('text', 'ProductsFeedURL', array(
+        $form->setElement('text', 'ProductsFeedURL', array(
                 'label' => 'Products Feed URL',
                 'value' => '/retargeting/products',
                 'description' => 'Sends an update to Retargeting.Biz whenever a product has been updated.',
@@ -338,16 +335,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                 $articlePrice = $article['price'];
                 $articlePrice = str_replace(',', '.', $articlePrice);
                 $articleQuantity = $article['quantity'];
-                $articleName = $article['articlename'];
                 $variationCode = '';
-
-                // variations
-
-//                $container = Shopware()->Container();
-//                $additionalTextService = Shopware()->Container()->get('shopware_storefront.additional_text_service');
-//                $context = $container->get('shopware_storefront.context_service')->getShopContext();
-//                $product = Shopware()->Container()->get('shopware_storefront.list_product_service')->get($article['ordernumber'], $context);
-//                $product = $additionalTextService->buildAdditionalText($product, $context);
 
                 $products[] = '{
                     "id": ' . $articleId . ',
@@ -405,14 +393,12 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         $apiKey = $this->Config()->get('TrackingAPIKey');
         $token = $this->Config()->get('RESTAPIKey');
         if ($apiKey && $apiKey != "" && $token && $token != "") {
-            //            require_once "lib/api/Retargeting_REST_API_Client.php";
             require_once $this->Path() . "lib/api/Retargeting_REST_API_Client.php";  //safer
 
             $retargetingClient = new Retargeting_REST_API_Client($token);
             $retargetingClient->setResponseFormat("json");
             $retargetingClient->setDecoding(false);
             $response = $retargetingClient->order->save($paramsAPI['orderInfo'], $paramsAPI['orderProducts']);
-            //            error_log(print_r($response, true)."\n", 3, Shopware()->DocPath() . '/response.log');
         }
 
         Shopware()->Session()->offsetSet("userData", $userData);
@@ -445,9 +431,9 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                 $variationsCode[] = $selection['option_name'];
                 $instock = $selection['stock'];
                 $_variationsDetails[] = '"' . $selection['option_name'] . '": {
-                    "category_name": "' . htmlspecialchars($selection['group_name']) . '",
-                    "category" : "' . htmlspecialchars($selection['group_name']) . '",
-                    "value" : "' . htmlspecialchars($selection['option_name']) . '"
+                    "category_name": "' . htmlspecialchars_decode($selection['group_name']) . '",
+                    "category" : "' . htmlspecialchars_decode($selection['group_name']) . '",
+                    "value" : "' . htmlspecialchars_decode($selection['option_name']) . '"
                 }';
             }
             $stock = false;
@@ -476,7 +462,6 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
     {
         /** @var \Shopware_Controllers_Frontend_Detail $subject */
         $subject = $args->getSubject();
-        $request = $subject->Request();
         $view = $subject->View();
         $article = $view->getAssign('sArticle');
         $stock = $article['instock'];
@@ -499,14 +484,12 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         Shopware()->Session()->offsetSet("finish", $cartDataProducts);
         Shopware()->Session()->offsetSet("selected", $selected);
         $articleId = $article['articleID'];
-        $articleName = htmlspecialchars($article['articleName']);
-        //$articleUrl = $article['linkDetailsRewrited']; //directly with {url sArticle=$sArticle.articleID title=$sArticle.articleName}
+        $articleName = htmlspecialchars_decode($article['articleName']);
         $articleImage = $article['image']['source'];
         $articlePrice = $article['price_numeric'];          //if promo this is the actual price
         $articlePromoPrice = $article['pseudoprice_numeric'];         //if not assign 0
         $articleBrandId = $article['supplierID'];
         $articleBrandName = $article['supplierName'];
-        $articleName = htmlspecialchars($article['articleName']);
 
         $sql = "SELECT ac.categoryID
                 FROM s_articles_categories ac
@@ -515,7 +498,6 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         $params = array($articleId);
         $getCategories = Shopware()->Db()->fetchAll($sql, $params);     //get all Categories for product
 
-        $categoryId = $article['categoryID'];
         $allCategories = array();     //to product.tpl
 
         foreach ($getCategories as $categoryId) {
@@ -524,7 +506,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             $_categoryBreadcrumb = '[]';                    // and breadCrumb to []  , check documentation for more info
             $categories = Shopware()->Modules()->Categories()->sGetCategoriesByParent($categoryId); // get all categories in path
             $articleCategory = Shopware()->Modules()->Categories()->sGetCategoryContent($categoryId);
-            $categoryName = '"' . htmlspecialchars($articleCategory['name']) . '"';
+            $categoryName = '"' . htmlspecialchars_decode($articleCategory['name']) . '"';
             $categories_no = count($categories);
             if ($categories_no > 1) {
                 $_categoryBreadcrumb = array();
@@ -551,7 +533,6 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
                     }';
 
                 $_categoryBreadcrumb = '[' . implode(', ', $_categoryBreadcrumb) . ']';
-                //            $_categoryParent = '[{ ' . $_categoryParent . ', breadcrumb: ' . $_categoryBreadcrumb . ' }]';
             }
 
             $categoryIds = array("id" => $categoryId);
@@ -577,7 +558,6 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         }
         $view->assign("product_id", $articleId);
         $view->assign("product_name", $articleName);
-        //$view->assign("product_url", $articleUrl);
         $view->assign("product_main_image_src", $articleImage);
         if ($articlePromoPrice != 0 && $articlePromoPrice > $articlePrice) {
             $view->assign("product_price", $articlePromoPrice);
@@ -671,7 +651,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
             "city" => $request->getPost('city')
         );
 
-        if ($setEmailData) { //if set
+        if ($setEmailData) {
             $view->assign("setEmail", $setEmailData); //assign only the email to the setEmail.tpl template
             if ($userData) {
                 $view->assign("setEmail", $userData); //assign name, email, city to the setEmail.tpl template
