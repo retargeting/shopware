@@ -11,7 +11,7 @@ use Shopware\Bundle\StoreFrontBundle;
 class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Components_Plugin_Bootstrap
 {
     /**
-     * Install plugin method
+     * Installs the plugin.
      *
      * @return array|bool
      */
@@ -24,6 +24,9 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
 
         $this->createConfig();
 
+        $this->getLogo();
+
+        $this->fixLogo();
 
         return true;
     }
@@ -946,28 +949,34 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
     }
 
     /**
-     * Returns plugin version
+     * Returns the version of plugin as string.
+     *
+     * @throws Exception
      *
      * @return string
      */
     public function getVersion()
     {
-        return '1.1.0';
+        $info = json_decode(file_get_contents(__DIR__ . '/plugin.json'), true);
+
+        if ($info) {
+            return $info['currentVersion'];
+        }
+        throw new Exception('The plugin has an invalid version file.');
     }
 
     /**
-     * Returns plugin name
+     * Returns plugin name.
      *
      * @return string
      */
-
     public function getLabel()
     {
-        return "Retargeting Tracker";
+        return 'Retargeting Tracker';
     }
 
     /**
-     * Returns Plugin Info
+     * Returns Plugin Info.
      * @return array
      */
     public function getInfo()
@@ -975,12 +984,7 @@ class Shopware_Plugins_Frontend_Retargeting_Bootstrap extends Shopware_Component
         return array(
             'label' => $this->getLabel(),
             'version' => $this->getVersion(),
-            'copyright' => 'Copyright © ' . date('Y') . ', Retargeting Biz SRL',
-            'author' => 'Retargeting Biz SRL <info@retargeting.biz>',
-            'support' => 'info@retargeting.biz',
-            'revision' => '1',
-            'link' => 'https://retargeting.biz/',
-            'description' => 'Personalized email content + Personalized live messages + SMS triggers to deliver to your customers the products they want to buy.'
+            'description' => file_get_contents(__DIR__ . '/info.txt'),
         );
     }
 
