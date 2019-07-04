@@ -1,4 +1,9 @@
-# Retargeting Tracker
+![Retargeting.Biz Logo](https://s3.amazonaws.com/techpluto/wp-content/uploads/2017/06/29185746/techp_1194697.png)
+
+# Retargeting Tracker plugin for Shopware 5.2.2.x to 5.4.0
+Retargeting Tracker plugin installs the required tagging for [Retargeting.Biz](https://Retargeting.biz)'s features in Shopware based online shops, providing your eCommerce business with all the necessary tools to build a strong conversion rate optimization strategy.
+
+In order to implement the Retargeting Tracker plugin you need to setup a [Retargeting.Biz](https://Retargeting.biz) account.
 
 ### Installation
 ```shell
@@ -25,7 +30,7 @@ zip -r Retargeting.zip Frontend/
 This work is licensed under a **http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)**.
 
 ### Dependencies
-Tested on Shopware 5.2.2x & 5.3.x
+Tested on Shopware 5.2.2.x to 5.4.0
 
 Shopware 5.2.20 CSRF token problem. Check UPGRADE-5.2.md [https://github.com/shopware/shopware/blob/5.2/UPGRADE-5.2.md]
 
